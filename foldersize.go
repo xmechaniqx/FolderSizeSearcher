@@ -15,9 +15,11 @@ func main() {
 	files, _ := os.ReadDir(dir)
 	path, _ := filepath.Abs(dir)
 	filepath.Abs(dir)
+
 	for _, file := range files {
 		// r := file.Name()
 		Arr = append(Arr, filepath.Join(path, file.Name()))
+		fmt.Println(filepath.Join(path, file.Name()))
 		// names = append(names, filepath.Join(file.Name()))
 		// fmt.Println(Arr)
 		// fmt.Println(filepath.Join("путь", path, "имя", file.Name()), Arr)
@@ -25,7 +27,8 @@ func main() {
 	// fmt.Println(Arr)
 	for _, v := range Arr {
 		// DirSize(v)
-		if DirSizeMB(v) >= 1 {
+		fmt.Println(v)
+		if DirSizeMB(v) >= 250 {
 			target[v] = DirSizeMB(v)
 		}
 		// fmt.Printf("%10.2f\n %10s", DirSizeMB(v), names[k])
@@ -45,6 +48,7 @@ func DirSizeMB(path string) float64 {
 	readSize := func(path string, file os.FileInfo, err error) error {
 		if !file.IsDir() {
 			dirSize += file.Size()
+			fmt.Println(path, file.Size())
 		}
 
 		return nil
