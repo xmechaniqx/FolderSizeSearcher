@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sync"
 	"time"
 )
 
@@ -27,14 +28,27 @@ func main() {
 		// fmt.Println(filepath.Join("путь", path, "имя", file.Name()), Arr)
 	}
 	// fmt.Println(Arr)
+	var wg sync.WaitGroup
 	for _, v := range Arr {
-		// DirSize(v)
-		fmt.Println(v)
-		if DirSizeMB(v) >= 305 {
-			target[v] = DirSizeMB(v)
-		}
-		// fmt.Printf("%10.2f\n %10s", DirSizeMB(v), names[k])
+		wg.Add(1)
+		go func(v string) {
+			defer wg.Done()
+			// dirSize := DirSizeMB(v)
+			if DirSizeMB(v) >= 305 {
+				target[v] = DirSizeMB(v)
+			}
+		}(v)
 	}
+	wg.Wait()
+
+	// for _, v := range Arr {
+	// DirSize(v)
+	// fmt.Println(v)
+	// if DirSizeMB(v) >= 305 {
+	// 	target[v] = DirSizeMB(v)
+	// }
+	// fmt.Printf("%10.2f\n %10s", DirSizeMB(v), names[k])
+	// }
 	// for k, v := range target {
 
 	// 	fmt.Printf("%.f %s\n", v, k)
